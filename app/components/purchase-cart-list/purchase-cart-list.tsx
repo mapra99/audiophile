@@ -1,5 +1,5 @@
 import { Cross } from '~/icons'
-import { Text, ButtonLink, PurchaseCartListItem } from '~/components'
+import { Text, ButtonLink, Button, PurchaseCartListItem } from '~/components'
 import formatCurrency from '~/utils/format-currency'
 
 import type { PurchaseCartListProps } from './types'
@@ -48,9 +48,13 @@ const PurchaseCartList = ({ cart, onClose, onCartRemoval }: PurchaseCartListProp
         </Text>
       </div>
 
-      <ButtonLink variant="primary" to={`/checkout?cart_uuid=${uuid}`} className="text-center" onClick={onClose}>
+      <ButtonLink variant="primary" to={`/checkout?cart_uuid=${uuid}`} className="text-center mb-4" onClick={onClose}>
         Checkout
       </ButtonLink>
+
+      <Button variant="secondary" type="button" className="text-center w-full" onClick={onClose}>
+        Continue Shopping
+      </Button>
     </div>
   )
 }
