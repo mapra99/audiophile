@@ -7,7 +7,6 @@ import * as SessionStorage from '~/utils/session-storage'
 import formDataToObject from '~/utils/form-data-to-object'
 import RequestError from '~/errors/request-error'
 import { PHONE_REGEXP } from '~/constants'
-import trackPageView from '~/utils/track-page-view'
 
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import type { UserInfoPayload } from '~/models/auth'
@@ -30,8 +29,6 @@ const validateForm = (userInfo: UserInfoPayload) => {
 }
 
 export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-
   const url = new URL(request.url)
   const cartUuid = url.searchParams.get('cart_uuid')
 

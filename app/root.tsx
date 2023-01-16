@@ -13,6 +13,7 @@ import { allAvailableProductCategories } from '~/models/product-category'
 import { getLastStartedCart } from './models/purchase-cart';
 import * as SessionStorage from '~/utils/session-storage'
 import { PurchaseCartProvider } from '~/contexts/purchase-cart-context'
+import useSessionTracking from './hooks/use-session-tracking';
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
@@ -38,6 +39,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function App() {
   const { categories, activeCart } = useLoaderData<typeof loader>()
+  useSessionTracking()
 
   return (
     <html lang="en" className="h-full">

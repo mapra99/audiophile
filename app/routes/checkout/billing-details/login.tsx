@@ -5,7 +5,6 @@ import formDataToObject from '~/utils/form-data-to-object'
 import { getOrCreateSessionId } from '~/utils/session-storage'
 import RequestError from '~/errors/request-error'
 import { login } from '~/models/auth'
-import trackPageView from '~/utils/track-page-view'
 
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import type { UserInfoPayload } from '~/models/auth'
@@ -23,8 +22,6 @@ const validateForm = (userInfo: UserInfoPayload) => {
 }
 
 export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-
   const url = new URL(request.url)
   const cartUuid = url.searchParams.get('cart_uuid')
 
