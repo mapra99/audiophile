@@ -4,7 +4,7 @@ import { useLoaderData } from '@remix-run/react'
 import { getProduct } from '~/models/product'
 import { getProductStocks } from '~/models/product-stock'
 import { allAvailableProductCategories } from '~/models/product-category'
-import { ProductHeading, ProductFeatures, ProductGallery, CategoriesList, BestAudioBanner } from '~/components'
+import { ProductHeading, ProductFeatures, ProductGallery, CategoriesList, BestAudioBanner, ProductRecommendations } from '~/components'
 import trackPageView from '~/utils/track-page-view'
 import goBack from '~/utils/go-back'
 
@@ -52,6 +52,10 @@ export default () => {
 
       <div className="px-6 sm:px-10 mb-20 sm:mb-28 lg:mb-40">
         <ProductGallery product={product} />
+      </div>
+
+      <div className="px-6 sm:px-10 mb-20 sm:mb-28 lg:mb-40">
+        <ProductRecommendations recommendations={product.recommendations} />
       </div>
 
       <div className="mb-20 sm:mb-28 lg:mb-40">

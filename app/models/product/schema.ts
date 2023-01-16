@@ -30,7 +30,19 @@ export const ProductSchema = z.object({
     features: z.string(),
     box_content: z.string(),
     preview_images: z.array(z.string()),
-  })
+  }),
+  recommendations: z.array(z.object({
+    name: z.string(),
+    slug: z.string(),
+    base_price: z.number(),
+    featured: z.boolean(),
+    total_quantity: z.number(),
+    created_at: z.string(),
+    updated_at: z.string(),
+    image: z.object({
+      url: z.string()
+    }),
+  }))
 })
 
 export interface BoxItem {
