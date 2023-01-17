@@ -5,7 +5,6 @@ import { Text, ButtonLink, PurchaseCartSummaryItem } from '~/components'
 import { Check } from '~/icons'
 import { getCartDetails } from '~/models/purchase-cart'
 import { getPayment } from '~/models/payment'
-import trackPageView from "~/utils/track-page-view"
 import { getSessionId } from '~/utils/session-storage'
 import { getAccessToken } from '~/utils/auth-storage'
 import formatCurrency from '~/utils/format-currency'
@@ -13,8 +12,6 @@ import formatCurrency from '~/utils/format-currency'
 import type { LoaderArgs } from "@remix-run/node"
 
 export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-
   const sessionId = await getSessionId(request)
   invariant(sessionId, 'session must exist')
 

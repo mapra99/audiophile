@@ -9,9 +9,8 @@ import RequestError from '~/errors/request-error'
 import { confirmCode } from '~/models/auth'
 import useCountdown from '~/hooks/use-countdown'
 import goBack from '~/utils/go-back'
-import trackPageView from '~/utils/track-page-view'
 
-import type { ActionArgs, LoaderArgs } from '@remix-run/node'
+import type { ActionArgs } from '@remix-run/node'
 import type { CodeInfoPayload } from '~/models/auth'
 
 const CODE_EXPIRATION_TIME = 5 * 60 // 5 minutes
@@ -28,11 +27,6 @@ const validateForm = (codeInfo: CodeInfoPayload) => {
   if (!codeInfo.code) errors.code = 'Please enter your code'
 
   return errors
-}
-
-export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-  return null;
 }
 
 export const action = async ({ request }: ActionArgs) => {

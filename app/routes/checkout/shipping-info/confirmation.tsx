@@ -5,7 +5,6 @@ import { Text, Button, LocationInfo } from '~/components'
 import useMap from '~/hooks/use-map'
 import { getAccessToken } from '~/utils/auth-storage'
 import { getSessionId } from "~/utils/session-storage"
-import trackPageView from '~/utils/track-page-view'
 import { getLocation, deleteLocation } from '~/models/location'
 import { getLastStartedCart, updateCartLocation } from '~/models/purchase-cart'
 
@@ -16,8 +15,6 @@ export const links: LinksFunction = () => {
 }
 
 export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-
   const MAPBOX_GL_TOKEN = process.env.MAPBOX_GL_TOKEN
   invariant(MAPBOX_GL_TOKEN, 'MAPBOX_GL_TOKEN must be defined')
 

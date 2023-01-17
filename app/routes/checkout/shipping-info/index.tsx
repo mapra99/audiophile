@@ -4,7 +4,6 @@ import invariant from "tiny-invariant"
 import { Text, RadioInput, LocationInfo, Button } from '~/components'
 import { getAllLocations } from '~/models/location'
 import { getLastStartedCart, updateCartLocation } from '~/models/purchase-cart'
-import trackPageView from "~/utils/track-page-view"
 import { getAccessToken } from "~/utils/auth-storage"
 import { getSessionId } from '~/utils/session-storage'
 import formDataToObject from "~/utils/form-data-to-object"
@@ -21,8 +20,6 @@ interface FormDataArgs {
 }
 
 export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-
   const url = new URL(request.url)
   const cartUuid = url.searchParams.get('cart_uuid')
 

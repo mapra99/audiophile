@@ -4,15 +4,12 @@ import invariant from 'tiny-invariant'
 import { Text, PurchaseCartSummary, ProgressBar } from '~/components'
 import { getCartDetails } from '~/models/purchase-cart'
 import { getSessionId } from '~/utils/session-storage'
-import trackPageView from '~/utils/track-page-view'
 import { getAccessToken } from '~/utils/auth-storage'
 import goBack from '~/utils/go-back'
 
 import type { LoaderArgs } from '@remix-run/node'
 
 export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-
   const sessionId = await getSessionId(request)
   invariant(sessionId, 'sessionId must exist')
 

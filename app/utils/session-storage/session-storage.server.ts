@@ -1,7 +1,9 @@
 import { createCookieSessionStorage } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import type { PersistSessionParams } from './types'
 import { createSession } from '~/models/session'
+import addSeconds from "../add-seconds";
+
+import type { PersistSessionParams } from './types'
 
 invariant(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 
@@ -35,9 +37,10 @@ export const persistSession = async ({
 }: PersistSessionParams) => {
   const session = await getSession(request);
   session.set(SESSION_ID_KEY, sessionId);
+
   const commitHeader = await sessionStorage.commitSession(
     session, {
-      maxAge: EXPIRATION_TIME
+      expires: addSeconds(new Date(), EXPIRATION_TIME)
     }
   )
 
@@ -47,14 +50,16 @@ export const persistSession = async ({
 }
 
 export const getOrCreateSessionId = async (request: Request) => {
-  const sessionId = await getSessionId(request)
-  if (sessionId) return { sessionId }
+  let sessionId = await getSessionId(request)
+  if (!sessionId) {
+    const newSession = await createSession()
+    sessionId = newSession.uuid
+  }
 
-  const newSession = await createSession()
-  const headers = await persistSession({ request, sessionId: newSession.uuid})
+  const headers = await persistSession({ request, sessionId })
 
   return {
-    sessionId: newSession.uuid,
+    sessionId,
     headers
   }
 }

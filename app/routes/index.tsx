@@ -4,13 +4,10 @@ import { HomeHero, CategoriesList, BestAudioBanner, HomeProductBanners } from '~
 import { featuredProducts, homepageProducts } from '~/models/product'
 import { allAvailableProductCategories } from '~/models/product-category'
 import getRandom from '~/utils/get-random'
-import trackPageView from '~/utils/track-page-view'
 
 import type { LoaderArgs } from '@remix-run/node'
 
 export const loader = async ({ request }: LoaderArgs) => {
-  trackPageView(request)
-
   const products = await featuredProducts()
   const featuredProduct = getRandom(products)
 
