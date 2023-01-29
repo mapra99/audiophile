@@ -17,3 +17,10 @@ export const AccessTokenSchema = z.object({
 })
 
 export type AccessToken = z.infer<typeof AccessTokenSchema>;
+
+export const VerificationStatusSchema = z.object({
+  started_code: z.boolean(),
+  expires_at: z.string().nullable()
+})
+
+export type VerificationStatus = z.infer<typeof VerificationStatusSchema>;

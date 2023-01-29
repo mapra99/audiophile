@@ -10,15 +10,26 @@ const useCountdown = ({ target, diffSeconds = 0 }: UseCountdownArgs) => {
 
   const initialTimeDiff = timeDiff(now(), targetDate)
   const [countdown, setCountdown] = useState(initialTimeDiff)
+  const [intervalId, setIntervalId] = useState<NodeJS.Timer | undefined>()
 
   useEffect(() => {
     const interval = setInterval(() => {
       const newTimeDiff = timeDiff(now(), targetDate)
-      if (newTimeDiff >= 0) setCountdown(newTimeDiff);
+
+      setCountdown(newTimeDiff >= 0 ? newTimeDiff : 0);
     }, 1000);
+
+    setIntervalId(interval)
 
     return () => clearInterval(interval);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (countdown === 0 && intervalId) {
+      clearInterval(intervalId)
+      setIntervalId(undefined)
+    }
+  }, [countdown, intervalId])
 
   return getReturnValues(countdown);
 };
