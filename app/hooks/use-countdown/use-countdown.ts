@@ -14,7 +14,12 @@ const useCountdown = ({ target, diffSeconds = 0 }: UseCountdownArgs) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const newTimeDiff = timeDiff(now(), targetDate)
-      if (newTimeDiff >= 0) setCountdown(newTimeDiff);
+
+      if (newTimeDiff >= 0) {
+        setCountdown(newTimeDiff);
+      } else {
+        clearInterval(interval)
+      }
     }, 1000);
 
     return () => clearInterval(interval);

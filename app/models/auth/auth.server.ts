@@ -1,5 +1,5 @@
 import * as AudiophileClient from '~/utils/audiophile-client'
-import { AccessTokenSchema } from './schema'
+import { AccessTokenSchema, VerificationStatusSchema } from './schema'
 
 import type { UserInfoPayload, CodeInfoPayload } from './schema'
 
@@ -25,4 +25,13 @@ export const confirmCode = async(sessionId: string, codeInfo: CodeInfoPayload) =
 
   const accessToken = AccessTokenSchema.parse(response);
   return accessToken
+}
+
+export const fetchVerificationStatus = async(sessionId: string, email: string) => {
+  const response = await AudiophileClient.sendRequest('get', `auth/verification_status?email=${encodeURIComponent(email)}`, {
+    sessionToken: sessionId
+  })
+
+  const verificationStatus = VerificationStatusSchema.parse(response);
+  return verificationStatus
 }

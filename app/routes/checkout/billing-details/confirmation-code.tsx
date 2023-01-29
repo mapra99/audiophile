@@ -1,19 +1,27 @@
-import { Form, useActionData } from '@remix-run/react'
+import { Form, useActionData, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
 import invariant from 'tiny-invariant'
-import { Button, Text, TextInput } from '~/components'
+import { Button, Text, TextInput, VerificationStatusMessage } from '~/components'
 import formDataToObject from '~/utils/form-data-to-object'
 import { getOrCreateSessionId } from '~/utils/session-storage'
 import { persistAccessToken } from '~/utils/auth-storage'
 import RequestError from '~/errors/request-error'
-import { confirmCode } from '~/models/auth'
-import useCountdown from '~/hooks/use-countdown'
-import goBack from '~/utils/go-back'
+import { confirmCode, fetchVerificationStatus } from '~/models/auth'
 
-import type { ActionArgs } from '@remix-run/node'
+import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import type { CodeInfoPayload } from '~/models/auth'
 
-const CODE_EXPIRATION_TIME = 5 * 60 // 5 minutes
+export const loader = async({ request }: LoaderArgs) => {
+  const url = new URL(request.url)
+  const email = url.searchParams.get('email')
+  invariant(email, 'Email must be present')
+
+  const { sessionId } = await getOrCreateSessionId(request)
+  invariant(sessionId, 'Session must be present')
+
+  const codeStatus = await fetchVerificationStatus(sessionId, email)
+  return json({ ...codeStatus })
+}
 
 interface ValidationErrors {
   code?: string
@@ -64,7 +72,8 @@ export const action = async ({ request }: ActionArgs) => {
 export default () => {
   const result = useActionData<typeof action>()
   const errors: ValidationErrors = result ? result.errors : {}
-  const { minutes, seconds } = useCountdown({ diffSeconds: CODE_EXPIRATION_TIME })
+
+  const { started_code, expires_at } = useLoaderData<typeof loader>()
 
   return (
     <div>
@@ -83,15 +92,10 @@ export default () => {
           </Text>
         )}
 
-        <Text variant="body" as="p">
-          The code will be valid for the next { minutes } minutes, { seconds } seconds.
-          {' '}
-          { minutes === 0 && seconds === 0 && (
-            <button className="text-orange underline hover:cursor-pointer block text-left p-0" onClick={goBack}>
-              Resend code
-            </button>
-          )}
-        </Text>
+        <VerificationStatusMessage
+          startedCode={started_code}
+          expiresAt={expires_at}
+        />
 
         <Button type="submit" variant="primary">
           Continue
