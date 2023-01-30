@@ -5,7 +5,7 @@ import { maskInput } from 'vanilla-text-mask'
 import type { UseMaskedInputArgs } from './types'
 
 const MASK_TYPES_MAPPINGS = {
-  phone: ['+', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+  phone: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 }
 
 const useMaskedInput = ({ selector, type }: UseMaskedInputArgs) => {
