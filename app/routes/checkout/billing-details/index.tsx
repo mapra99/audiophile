@@ -1,7 +1,6 @@
 import { Link, Form, useActionData, useLoaderData } from '@remix-run/react'
 import { json, redirect } from '@remix-run/node'
-import { Text, TextInput, Button } from '~/components'
-import useMaskedInput from '~/hooks/use-masked-input'
+import { Text, TextInput, Button, PhoneInput } from '~/components'
 import { signUp } from '~/models/auth'
 import * as SessionStorage from '~/utils/session-storage'
 import formDataToObject from '~/utils/form-data-to-object'
@@ -23,7 +22,7 @@ const validateForm = (userInfo: UserInfoPayload) => {
   if (!userInfo.name) errors.name = 'Please enter your name'
   if (!userInfo.email) errors.email = 'Please enter your email'
   if (!userInfo.phone) errors.phone = 'Please enter your phone'
-  if (!PHONE_REGEXP.test(userInfo.phone)) errors.phone = 'Please enter a valid nubmer'
+  if (!PHONE_REGEXP.test(userInfo.phone)) errors.phone = 'Please enter a valid number'
 
   return errors
 }
@@ -38,6 +37,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData()
   const userInfo = formDataToObject(formData) as UserInfoPayload
+  console.log({userInfo})
   const { sessionId } = await SessionStorage.getOrCreateSessionId(request)
 
   const errors = validateForm(userInfo)
@@ -63,11 +63,6 @@ export default () => {
   const result = useActionData<typeof action>()
   const errors: ValidationErrors = result ? result.errors : {}
 
-  useMaskedInput({
-    selector: 'input#phone',
-    type: 'phone'
-  })
-
   return (
     <div>
       <Text as="h3" variant="subtitle" className="mb-4">
@@ -83,7 +78,9 @@ export default () => {
             <TextInput label="Email Address" id="email" name="email" placeholder="email@example.com" type="email" error={errors.email} />
           </div>
         </div>
-        <TextInput label="Phone Number" id="phone" name="phone" placeholder="+01 202-555-0136" type="phone" error={errors.phone} />
+
+        <PhoneInput label="Phone Number" id="phone" name="phone" type="phone" error={errors.phone} />
+
         { errors.general && (
           <Text as="p" variant="body" className="text-danger !text-xs">
             { errors.general }
