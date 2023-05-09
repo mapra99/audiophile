@@ -7,7 +7,7 @@ const ProductHeading = ({ product, stocks }: ProductHeadingpProps) => {
   const { name, image, featured, base_price, contents: { description } } = product
 
   const formattedPrice = formatCurrency(base_price)
-  const stock = stocks[0] // TODO: Support multiple stocks when product toppings are implemented. For now each product will have only 1 stock
+  const stock = stocks.find(stock => stock.quantity > 0) // TODO: Support multiple stocks when product toppings are implemented. For now each product will have only 1 stock
 
   return (
     <div className="max-w-6xl mx-auto flex flex-col gap-8 sm:flex-row sm:gap-16 sm:items-center lg:gap-32">
@@ -34,7 +34,7 @@ const ProductHeading = ({ product, stocks }: ProductHeadingpProps) => {
           { formattedPrice }
         </Text>
 
-        { stock?.quantity > 0 ? (
+        { stock ? (
           <AddProductForm stock={stock} />
         ) : (
           <NotEnoughStocksBanner />

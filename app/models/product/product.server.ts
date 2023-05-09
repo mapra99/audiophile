@@ -33,9 +33,15 @@ export const homeFeaturedProducts = async () => {
 
 export const homepageProducts = async () => {
   const allProducts = await homeFeaturedProducts();
-  const primary = getRandom(allProducts.filter(product => product.contents.home_banner === 'primary'))
-  const background = getRandom(allProducts.filter(product => product.contents.home_banner === 'integrated_background'))
-  const sideBySide = getRandom(allProducts.filter(product => product.contents.home_banner === 'side_by_side'))
+
+  const primaryProducts = allProducts.filter(product => product.contents.home_banner === 'primary')
+  const primary = primaryProducts.length > 0 ? getRandom(primaryProducts) : null
+
+  const backgroundProducts = allProducts.filter(product => product.contents.home_banner === 'integrated_background')
+  const background = backgroundProducts.length > 0 ? getRandom(backgroundProducts) : null
+
+  const sideBySideProducts = allProducts.filter(product => product.contents.home_banner === 'side_by_side')
+  const sideBySide = sideBySideProducts.length > 0 ? getRandom(sideBySideProducts) : null
 
   return {
     primary,
