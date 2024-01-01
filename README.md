@@ -32,7 +32,7 @@ This is a Front-end application. The core backend functionality [lives here](htt
 
 ## Live Demo
 
-[Live Demo Link](https://audiophile-stg.fly.dev/)
+[Live Demo Link](https://demo.audiophile.lat/)
 
 
 ## Getting Started
